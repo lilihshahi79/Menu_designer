@@ -1,0 +1,12 @@
+To run this project, you will need:
+
+- Python 3.10 or above
+- numpy
+- pandas
+- torch
+- transformers
+- sentence-transformers
+- faiss-cpu
+- scikit-learn
+- tqdm
+- jupyter
