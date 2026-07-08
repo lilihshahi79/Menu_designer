@@ -1,54 +1,77 @@
+Yup — here’s an updated README version with those sections added in naturally.
 
 # Menu Designer
 
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Why This Project Matters](#why-this-project-matters)
-3. [Technologies Used](#technologies-used)
-4. [Why These Technologies Were Chosen](#why-these-technologies-were-chosen)
-5. [System Workflow](#system-workflow)
-6. [Why This Process Was Used](#why-this-process-was-used)
-7. [Outputs and Evaluation](#outputs-and-evaluation)
-8. [Conclusion](#conclusion)
+2. [How the Project Came About](#how-the-project-came-about)
+3. [The Motivation](#the-motivation)
+4. [What Problem It Hopes to Solve](#what-problem-it-hopes-to-solve)
+5. [The Intended Use](#the-intended-use)
+6. [Technologies Used](#technologies-used)
+7. [Why These Technologies Were Chosen](#why-these-technologies-were-chosen)
+8. [System Workflow](#system-workflow)
+9. [Why This Process Was Used](#why-this-process-was-used)
+10. [Challenges](#challenges)
+11. [Limitations](#limitations)
+12. [Outputs and Evaluation](#outputs-and-evaluation)
+13. [Conclusion](#conclusion)
 
 ---
 
 ## Project Overview
 
-The **Menu Designer** project is a retrieval-augmented generation (RAG) system built to generate menu recommendations based on user needs and preferences. Instead of relying only on a language model to produce answers from memory, the system first retrieves relevant recipe or menu information from a recipe collection and then uses that retrieved content to generate a more grounded and relevant response.
+**Menu Designer** is a Retrieval-Augmented Generation (RAG) project built to generate menu recommendations based on a user’s preferences, goals, and dietary constraints. Instead of relying only on a language model to answer from its internal knowledge, the system first retrieves relevant recipes from a dataset and then uses those retrieved results to generate a more grounded and useful recommendation.
 
-The goal of the project is to create a system that can recommend menus in a way that is more accurate, more explainable, and more aligned with user constraints such as food preferences or dietary restrictions.
+The project is designed to make menu generation more reliable, more relevant, and more aligned with what the user actually asks for.
 
 ---
 
-## Why This Project Matters
+## How the Project Came About
 
-A menu recommendation task is not just a text generation problem. It also requires the system to:
+This project came out of the idea that menu recommendation is not only a text generation task, but also a retrieval and reasoning task. A useful menu suggestion needs more than fluent language. It needs to reflect user requirements, retrieve relevant meal options, and combine them into a sensible final response.
 
-* find relevant recipes,
-* understand the user query,
-* respect dietary constraints,
-* and generate a coherent final response.
+Rather than building a system that simply generates food suggestions from memory, this project explores how combining retrieval with generation can produce recommendations that are better grounded in actual recipe data.
 
-A standard language model may produce fluent text, but it can still hallucinate or ignore important constraints. By using a RAG pipeline, the project improves reliability because the final answer is grounded in retrieved items from the recipe dataset.
+---
 
-This makes the system more suitable for practical recommendation tasks where relevance and constraint satisfaction matter more than creative generation alone.
+## The Motivation
+
+The motivation behind this project is to improve the quality of menu recommendations by making them more evidence-based. In many recommendation or generation tasks, a model may produce text that sounds convincing but does not fully match the user’s needs.
+
+For food-related recommendations, that becomes a real issue because users may care about things like dietary restrictions, ingredients, or meal type. This project is motivated by the need for a system that can understand user requests better and produce responses that are not just fluent, but also relevant and practical.
+
+---
+
+## What Problem It Hopes to Solve
+
+The main problem this project aims to solve is the gap between natural-sounding generation and actually useful recommendation. A standard language model might generate a menu that sounds reasonable, but it may ignore constraints, invent unsuitable meals, or fail to retrieve the most relevant options.
+
+This project tries to solve that by grounding generation in retrieved recipe data. That way, the final menu is supported by relevant examples instead of being produced only from model memory.
+
+---
+
+## The Intended Use
+
+The intended use of the Menu Designer is to support users who want menu suggestions tailored to their preferences or dietary needs. It is designed for scenarios where the user may want a menu based on constraints such as being dairy-free, looking for a certain meal type, or wanting a specific style of dish.
+
+The system is intended as a recommendation assistant rather than a fully autonomous planner. Its purpose is to provide relevant and grounded menu ideas that users can review and adapt.
 
 ---
 
 ## Technologies Used
 
-This project uses the following core technologies:
+This project uses the following main technologies:
 
-* **RAG (Retrieval-Augmented Generation)** as the overall framework
-* **Dense retrieval** for semantic search
-* **FAISS** for efficient similarity search over recipe representations
-* **BGE-small embeddings** to convert queries and recipes into dense vector representations
-* **Post-retrieval filtering** to remove items that violate user constraints, such as dairy-free requirements
-* **Query rewriting** for cases where the original user request is too vague
-* **LLM-based generation** to produce the final menu recommendation
-* **LLM-as-a-judge evaluation** to assess the quality of generated outputs
+* **Retrieval-Augmented Generation (RAG)** as the overall framework
+* **Dense retrieval** for semantic matching
+* **FAISS** for efficient vector similarity search
+* **BGE-small embeddings** for converting recipes and queries into dense representations
+* **Post-retrieval filtering** to enforce dietary constraints
+* **Query rewriting** for vague or underspecified queries
+* **Large Language Model generation** for the final response
+* **LLM-as-a-judge evaluation** for assessing output quality
 
 ---
 
@@ -56,57 +79,57 @@ This project uses the following core technologies:
 
 ### RAG
 
-RAG was chosen because the task requires both retrieval and generation. The system needs to find relevant recipes first, then generate a helpful answer using those retrieved results. This improves factual grounding and reduces the chance of unsupported recommendations.
+RAG was selected because the task needs both retrieval and generation. The system must first find relevant recipes and then generate a response using those recipes as support.
 
 ### Dense Retrieval
 
-Dense retrieval was selected because menu and recipe queries are often semantic rather than exact keyword matches. Users may describe a meal in a natural way, and embedding-based retrieval is better at capturing meaning beyond shared words.
+Dense retrieval was chosen because recipe and menu requests are often semantic. Users may describe what they want in natural language, and dense embeddings capture meaning better than simple keyword overlap.
 
 ### FAISS
 
-FAISS was used because it allows fast and scalable similarity search over dense vectors. This makes retrieval efficient even when working with a larger recipe collection.
+FAISS was used because it allows fast similarity search over dense vectors, which makes retrieval efficient and scalable.
 
 ### BGE-small Embeddings
 
-BGE-small was chosen as the embedding model because it provides compact semantic representations that work well for matching user queries to recipe content. It offers a strong balance between retrieval quality and efficiency.
+BGE-small was chosen because it provides compact semantic representations with a good balance between effectiveness and efficiency.
 
 ### Post-Retrieval Filtering
 
-Filtering was added after retrieval to make sure the final candidates satisfy hard constraints. For example, if the user requests a dairy-free menu, recipes containing dairy should be excluded even if they are semantically similar to the query.
+Filtering was added to enforce hard constraints after retrieval. This is important because semantically relevant recipes may still violate dietary requirements.
 
 ### Query Rewriting
 
-Query rewriting was explored because some user requests can be too short, vague, or underspecified. Rewriting helps turn these into more retrieval-friendly queries, which can improve the relevance of retrieved results.
+Query rewriting helps when user input is too broad or vague. A clearer query improves the quality of the retrieved candidates.
 
 ### LLM-as-a-Judge
 
-Evaluation in generative systems is difficult because there may not be a single correct answer. LLM-based judging was used to assess helpfulness, relevance, and constraint satisfaction in a more flexible way than exact-match metrics.
+Since menu generation is open-ended, there is not always one exact correct answer. LLM-based judging provides a more flexible way to evaluate relevance, usefulness, and constraint satisfaction.
 
 ---
 
 ## System Workflow
 
-The Menu Designer follows a multi-step pipeline:
+The system follows a step-by-step pipeline:
 
 ### 1. User Query Input
 
-The system receives a user request describing the desired menu or meal preferences.
+The system receives a user request describing menu preferences or dietary needs.
 
 ### 2. Query Processing
 
-If the query is vague or incomplete, it may be rewritten into a clearer form to improve retrieval performance.
+If the original query is vague, it may be rewritten into a clearer and more retrieval-friendly form.
 
 ### 3. Dense Retrieval
 
-The processed query is embedded and compared against recipe embeddings using FAISS to retrieve the most relevant candidates.
+The processed query is embedded and matched against recipe embeddings using FAISS to retrieve relevant candidates.
 
 ### 4. Constraint-Based Filtering
 
-Retrieved recipes are filtered to remove results that do not satisfy user requirements, such as dietary restrictions.
+Retrieved recipes are filtered to remove any results that do not satisfy user constraints.
 
 ### 5. Final Context Selection
 
-The remaining relevant recipes are used as the context for generation.
+The remaining retrieved recipes are selected as the evidence base for generation.
 
 ### 6. Response Generation
 
@@ -114,33 +137,50 @@ A language model uses the retrieved context to generate the final menu recommend
 
 ### 7. Evaluation
 
-Generated outputs are assessed using an LLM-as-a-judge setup to measure quality, relevance, and whether the recommendations satisfy the intended constraints.
+The generated outputs are assessed with an LLM-as-a-judge framework to measure quality and relevance.
 
 ---
 
 ## Why This Process Was Used
 
-This process was designed to separate the problem into smaller, more reliable stages.
+This process was used because it breaks the task into smaller, more reliable stages. Retrieval helps ground the response in actual recipe data. Filtering makes sure hard constraints are respected. Generation then turns the retrieved information into a readable and useful final answer.
 
-* **Retrieval first** ensures the system works from relevant recipe evidence instead of generating unsupported suggestions.
-* **Filtering after retrieval** ensures that hard user constraints are enforced directly.
-* **Generation last** allows the model to present results in a natural and helpful way.
-* **Evaluation with a judge model** provides a more realistic assessment for open-ended recommendations.
+This pipeline was chosen because it offers a stronger balance between relevance, flexibility, and control than using a generator alone.
 
-This pipeline is especially useful for recommendation tasks because it combines structure with flexibility. The retrieval stage improves grounding, the filtering stage improves safety and constraint satisfaction, and the generation stage improves readability and usefulness.
+---
+
+## Challenges
+
+One challenge in this project is that a retrieved recipe may be semantically relevant while still violating a user constraint. That means retrieval alone is not enough, and extra filtering is necessary.
+
+Another challenge is handling vague user queries. If the query is not specific enough, retrieval quality can drop. There is also the challenge of evaluating generated recommendations, since open-ended tasks do not always have one single correct answer.
+
+A further challenge is balancing retrieval quality with computational efficiency, especially when experimenting with different retrievers, filters, or query reformulation strategies.
+
+---
+
+## Limitations
+
+This project has some limitations. First, the system depends on the quality and coverage of the recipe dataset. If the relevant recipes are not present, the final answer will still be limited.
+
+Second, retrieval quality is not perfect. Even dense retrieval can return items that are only partially relevant. Third, post-retrieval filtering may reduce the number of usable candidates, especially for strict dietary queries.
+
+Finally, LLM-based evaluation is useful but not flawless. It can provide a practical assessment, but it is still an approximate judging method rather than a perfect measure of recommendation quality.
 
 ---
 
 ## Outputs and Evaluation
 
-The main output of the system is a generated menu recommendation based on the user’s request and the retrieved recipe context.
+The main output of the system is a generated menu recommendation grounded in retrieved recipe evidence.
 
-The project also evaluates output quality using an LLM-as-a-judge approach. This is helpful because traditional evaluation metrics are often limited for creative or open-ended recommendation tasks. The judging process focuses more on whether the final answer is relevant, sensible, and aligned with the user’s requirements.
+To evaluate the quality of these recommendations, the project uses an LLM-as-a-judge setup. This evaluation focuses on whether the output is relevant, coherent, and aligned with the user’s constraints, which is more suitable for this kind of open-ended recommendation task than exact-match metrics alone.
 
 ---
 
 ## Conclusion
 
-The Menu Designer project demonstrates how a RAG-based system can be used for intelligent menu recommendation. Rather than treating the problem as pure text generation, the project combines semantic retrieval, filtering, and generation to produce answers that are more grounded and practically useful.
+The Menu Designer project demonstrates how a RAG-based pipeline can improve menu recommendation by combining retrieval, filtering, and generation. Rather than treating the task as pure text generation, the system grounds its answers in retrieved recipes and applies extra steps to better satisfy user needs.
 
-The selected technologies were chosen to support accuracy, efficiency, and constraint handling. Overall, this design makes the system more reliable for real-world recommendation scenarios where relevance and user needs are critical.
+Overall, the project aims to produce recommendations that are more practical, more relevant, and more trustworthy for real-world menu suggestion scenarios.
+
+
