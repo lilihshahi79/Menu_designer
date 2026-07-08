@@ -1,5 +1,3 @@
-Yup — here’s an updated README version with those sections added in naturally.
-
 # Menu Designer
 
 ## Table of Contents
